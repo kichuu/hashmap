@@ -2,8 +2,10 @@ class HashMap {
   constructor(initalCapacity = 16) {
     this.capacity = initalCapacity;
     this.buckets = new Array(initalCapacity);
+    this.count = 0
   }
 
+  
   hash(key) {
     let hashCode = 0;
 
@@ -28,6 +30,7 @@ class HashMap {
       }
     }
     this.buckets[index].push([key, value]);
+    this.count ++
   }
 
   get(key) {
@@ -42,13 +45,77 @@ class HashMap {
     }
   }
 
-  has(key){
+  has(key) {
     let index = this.hash(key);
-    if(this.buckets[index] == null || this.buckets[index] == undefined ){
-        return false
+    if (this.buckets[index] == null || this.buckets[index] == undefined) {
+      return false;
     }
-    for(let i=0; i<this.buckets[index].length ; i++){
+    for (let i = 0; i < this.buckets[index].length; i++) {
+      if (this.buckets[index][i][0] == key) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  remove(key) {
+    let index = this.hash(key);
+    if (this.buckets[index] == null || this.buckets[index] == undefined) {
+      return false;
+    }
+    for (let i = 0; i < this.buckets[index].length; i++) {
+      if (this.buckets[index][i][0] == key) {
+        this.buckets[index].splice(i, 1);
+        this.count--
+        return true;
         
+      }
+    }
+    return false;
+  }
+
+  length(){
+    return this.count
+  }
+
+  clear(){
+    this.capacity = initalCapacity;
+    this.buckets = new Array(initalCapacity);
+    this.count = 0
+  }
+
+  keys(){
+    let keysArr =[]
+    for(let i=0;i<this.buckets.length;i++){
+      if(this.buckets[i] != null || this.buckets[i] != undefined){
+        for(let j=0;j<this.buckets[i].length;i++){
+          keysArr.push(this.buckets[i][j][0])
+        }
+      }
+    }
+    return keysArr
+  }
+
+  values(){
+    let valArr =[]
+    for(let i=0;i<this.buckets.length;i++){
+      if(this.buckets[i] != null || this.buckets[i] != undefined){
+        for(let j=0;j<this.buckets[i].length;i++){
+          keysArr.push(this.buckets[i][j][1])
+        }
+      }
+    }
+    return valArr
+  }
+
+  entries(){
+    let entriesArr = []
+    for(let i=0;i<this.buckets.length;i++){
+      if(this.buckets[i] != null || this.buckets[i] != undefined){
+        for(let j=0;j<this.buckets[i].length;i++){
+          entriesArr.push(this.buckets[i][j])
+        }
+      }
     }
   }
 }
